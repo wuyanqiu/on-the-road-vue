@@ -18,27 +18,29 @@
 <script>
     export default {
         name: "Login",
-        data(){
+        data() {
             return {
-                form:{
-                    username:'',
-                    password:''
+                form: {
+                    username: '',
+                    password: ''
                 },
-                rules:{
-                    username:[
-                        { required: true, message: '请输入账号', trigger: 'blur' }
+                rules: {
+                    username: [
+                        {required: true, message: '请输入账号', trigger: 'blur'}
                     ],
-                    password:[
-                        { required: true, message: '请输入密码', trigger: 'blur' }
+                    password: [
+                        {required: true, message: '请输入密码', trigger: 'blur'}
                     ]
                 }
             }
         },
-        methods:{
-            login:function (formName) {
+        methods: {
+            login: function (formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                      this.$router.push("/main")
+                        sessionStorage.setItem("isLogin", 'true');
+                        this.$store.dispatch("asyncUpdateUser", this.form)
+                        this.$router.push("/main");
                     } else {
                         this.$message.error('请输入账号密码');
                     }
@@ -49,10 +51,11 @@
 </script>
 
 <style scoped>
-  .login-title{
+  .login-title {
     text-align: center;
   }
-  .login-box{
+
+  .login-box {
     text-align: left;
     width: 400px;
     border: 1px solid #DCDFE6;
